@@ -1,0 +1,28 @@
+{
+  "name": "hue-korg-controller",
+  "version": "1.0.0",
+  "description": "contorll Philips Hue with KORG-nano Kontroller.",
+  "main": "app.coffee",
+  "scripts": {
+    "test": "coffeelint **/*.coffee",
+    "start": "DEBUG=hue-korg* coffee app.coffee"
+  },
+  "author": "Sho Hashimoto <hashimoto@shokai.org>",
+  "license": "MIT",
+  "keywords": [
+    "korg-nano",
+    "hue"
+  ],
+  "dependencies": {
+    "bluebird": "^2.9.9",
+    "coffee-script": "^1.9.0",
+    "debug": "^2.1.1",
+    "eventemitter2": "^0.4.14",
+    "korg-nano": "^1.0.0",
+    "lodash": "^3.2.0",
+    "request": "^2.53.0"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.8.1"
+  }
+}
