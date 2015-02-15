@@ -1,11 +1,11 @@
 {
-  "name": "hue-korg-controller",
+  "name": "hue-korg-controll",
   "version": "1.0.0",
-  "description": "contorll Philips Hue with KORG-nano Kontroller.",
+  "description": "contorll Philips Hue with KORG nanoKontrol",
   "main": "app.coffee",
   "scripts": {
     "test": "coffeelint **/*.coffee",
-    "start": "DEBUG=hue-korg* coffee app.coffee"
+    "start": "DEBUG=hue-korg coffee app.coffee"
   },
   "author": "Sho Hashimoto <hashimoto@shokai.org>",
   "license": "MIT",
