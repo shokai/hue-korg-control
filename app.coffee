@@ -24,6 +24,7 @@ hue.once 'ready', ->
     setHueStateThrottled hue.light(data.name),
       hue: Math.floor 65534*data.value  # color
       sat: 254
+      effect: if data.value is 1 then "colorloop" else "none"
     , (err, res) ->
       return logger.error err if err
       logger.info res
