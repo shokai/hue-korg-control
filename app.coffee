@@ -3,19 +3,29 @@ path = require 'path'
 _ = require 'lodash'
 debug = require('debug')('hue-korg')
 
+logger =
+  info: (msg) ->
+    return debug msg if debug.enabled
+    msg = JSON.stringify msg if typeof msg isnt 'string'
+    console.log msg
+  error: (msg) ->
+    return debug msg if debug.enabled
+    msg = JSON.stringify msg if typeof msg isnt 'string'
+    console.error msg
+
 Controller = require path.join __dirname, 'libs/controller'
 controller = new Controller
 Hue = require path.join __dirname, 'libs/hue'
 hue = new Hue
 
 setHueState = (light, state, callback) ->
-  debug "setState #{JSON.stringify state}"
+  logger.info "setState #{JSON.stringify state}"
   light.setState state, callback
 
 setHueStateThrottled = _.debounce setHueState, 300, trailing: true
 
 hue.once 'ready', ->
-  debug 'hue ready'
+  logger.info 'hue ready'
 
   controller.on 'slider', (data) ->
     setHueStateThrottled hue.light(data.name),
@@ -23,16 +33,16 @@ hue.once 'ready', ->
       sat: 254
       on: data.value > 0
     , (err, res) ->
-      return console.error err if err
-      debug res
+      return logger.error err if err
+      logger.info res
 
   controller.on 'knob', (data) ->
     setHueStateThrottled hue.light(data.name),
       hue: Math.floor 65534*data.value
       sat: 254
     , (err, res) ->
-      return console.error err if err
-      debug res
+      return logger.error err if err
+      logger.info res
 
   controller.on 'button', (data) ->
-    console.log data
+    logger.info data
