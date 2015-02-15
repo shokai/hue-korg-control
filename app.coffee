@@ -3,15 +3,7 @@ path = require 'path'
 _ = require 'lodash'
 debug = require('debug')('hue-korg')
 
-logger =
-  info: (msg) ->
-    return debug msg if debug.enabled
-    msg = JSON.stringify msg if typeof msg isnt 'string'
-    console.log msg
-  error: (msg) ->
-    return debug msg if debug.enabled
-    msg = JSON.stringify msg if typeof msg isnt 'string'
-    console.error msg
+logger = require(path.join __dirname, 'libs/logger')(debug)
 
 Controller = require path.join __dirname, 'libs/controller'
 controller = new Controller
