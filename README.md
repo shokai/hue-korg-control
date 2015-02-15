@@ -1,6 +1,11 @@
 # Hue-KorgNano Controll
 Controll [Philips Hue](http://www.meethue.com/) with [Korg nanoKontrol](http://www.korg.co.jp/Product/Discontinued/nano/)
 
+- https://github.com/shokai/hue-korg-control
+
+
+## Mapping
+
 - knob: hue
 - slider: brightness
 
