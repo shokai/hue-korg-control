@@ -7,7 +7,7 @@ module.exports = class Controller extends events.EventEmitter2
   constructor: ->
 
     korg = new Korg
-    korg.on '*', (e, value) =>
+    korg.on '*', (e, value) ->
       debug "#{e} -> #{value}"
 
     korg.on 'knob:*', (e, value) =>
