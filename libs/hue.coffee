@@ -2,7 +2,6 @@ fs     = require 'fs'
 crypto = require 'crypto'
 
 request = require 'request'
-Promise = require 'bluebird'
 events  = require 'eventemitter2'
 debug = require('debug')('hue-korg:hue')
 
