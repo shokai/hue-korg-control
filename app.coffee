@@ -37,7 +37,7 @@ hue.once 'ready', ->
         logger.info res
 
 setHueState = (light, state, callback) ->
-  logger.info "setState #{JSON.stringify state}"
+  logger.info "lights[#{light.number}].setState #{JSON.stringify state}"
   light.setState state, callback
 
 setHueStateThrottled = _.debounce setHueState, 300, trailing: true
