@@ -30,12 +30,20 @@ hue.once 'ready', ->
       logger.info res
 
   controller.on 'button', (data) ->
-    if data.name > 0 and data.value is true
+    if 10 > data.name and data.name > 0 and data.value is true
       setHueStateThrottled hue.light(data.name),
         sat: 0  # white
       , (err, res) ->
         return logger.error err if err
         logger.info res
+      return
+    if 19 > data.name and data.name > 9 and data.value is true
+      setHueStateThrottled hue.light(data.name - 9),
+        alert: "lselect"
+      , (err, res) ->
+        return logger.error err if err
+        logger.info res
+      return
 
 setHueState = (light, state, callback) ->
   logger.info "lights[#{light.number}].setState #{JSON.stringify state}"
