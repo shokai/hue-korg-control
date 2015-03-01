@@ -20,7 +20,7 @@ Controll [Philips Hue](http://www.meethue.com/) with [Korg nanoKontrol](http://w
 
     % npm start
 
-    % DEBUG=hue-korg* npm start  # for debug
+    % DEBUG=* npm start  # for debug
 
 
 ## Install as Service

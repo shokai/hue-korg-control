@@ -10,8 +10,12 @@ logger = require(path.join __dirname, 'libs/logger')(debug)
 
 Controller = require path.join __dirname, 'libs/controller'
 controller = new Controller
-Hue = require path.join __dirname, 'libs/hue'
+Hue = require 'philips-hue'
 hue = new Hue
+
+hue.loadConfigFile "#{process.env.HOME}/.hue-korg.json", (err) ->
+  return console.error err if err
+  hue.emit 'ready'
 
 hue.once 'ready', ->
   logger.info 'hue ready'
