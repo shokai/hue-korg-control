@@ -10,6 +10,8 @@ Controll [Philips Hue](http://www.meethue.com/) with [Korg nanoKontrol](http://w
 - slider: brightness
 - button 1-9: set saturation 0
 - button 10-18: blink(lselect)
+- button loop: colorloop effect
+- button play: lselect alert
 
 ## Install Dependencies
 

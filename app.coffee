@@ -53,7 +53,8 @@ hue.once 'ready', ->
         logger.info res
       return
 
-  ## loopボタンでlselect開始、どのボタンを押してもlselect停止
+  ## playボタンでlselect、loopボタンでcolorloop開始
+  ## どのボタンを押してもlselect/colorloop停止
   lselect_timer_id = null
   lselect_all = ->
     async.mapSeries [1..process.env.HUE_LIGHTS], (i, next) ->
@@ -63,13 +64,28 @@ hue.once 'ready', ->
     , (err, res) ->
       logger.error JSON.stringify err if err
       logger.info JSON.stringify res
+
+  colorloop_all = (enable=true) ->
+    async.mapSeries [1..process.env.HUE_LIGHTS], (i, next) ->
+      setHueStateThrottled hue.light(i),
+        effect: if enable then "colorloop" else "none"
+      , next
+    , (err, res) ->
+      logger.error JSON.stringify err if err
+      logger.info JSON.stringify res
+
   controller.on 'button', (data) ->
     return if data.value isnt true
     clearInterval lselect_timer_id
-    if data.name is 'loop'
-      lselect_all()
-      lselect_timer_id = setInterval lselect_all, 15000
-      return
+    switch data.name
+      when 'play'
+        lselect_all()
+        lselect_timer_id = setInterval lselect_all, 15000
+        return
+      when 'loop'
+        colorloop_all true
+      when 'stop'
+        colorloop_all false
 
 setHueState = (light, state, callback) ->
   logger.info "lights[#{light.number}].setState #{JSON.stringify state}"
