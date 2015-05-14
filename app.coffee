@@ -2,7 +2,6 @@ process.env.HUE_LIGHTS ||= 3
 
 path = require 'path'
 
-_     = require 'lodash'
 async = require 'async'
 
 debug  = require('debug')('hue-korg')
@@ -21,7 +20,7 @@ hue.once 'ready', ->
   logger.info 'hue ready'
 
   controller.on 'slider', (data) ->
-    setHueStateThrottled hue.light(data.name),
+    setHueState hue.light(data.name),
       bri: Math.floor 254*data.value  # brightness
       on: data.value > 0
     , (err, res) ->
@@ -29,7 +28,7 @@ hue.once 'ready', ->
       logger.info res
 
   controller.on 'knob', (data) ->
-    setHueStateThrottled hue.light(data.name),
+    setHueState hue.light(data.name),
       hue: Math.floor 65534*data.value  # color
       sat: 254
       effect: if data.value is 1 then "colorloop" else "none"
@@ -39,14 +38,14 @@ hue.once 'ready', ->
 
   controller.on 'button', (data) ->
     if 10 > data.name and data.name > 0 and data.value is true
-      setHueStateThrottled hue.light(data.name),
+      setHueState hue.light(data.name),
         sat: 0  # white
       , (err, res) ->
         return logger.error err if err
         logger.info res
       return
     if 19 > data.name and data.name > 9 and data.value is true
-      setHueStateThrottled hue.light(data.name - 9),
+      setHueState hue.light(data.name - 9),
         alert: "lselect"
       , (err, res) ->
         return logger.error err if err
@@ -58,7 +57,7 @@ hue.once 'ready', ->
   lselect_timer_id = null
   lselect_all = ->
     async.mapSeries [1..process.env.HUE_LIGHTS], (i, next) ->
-      setHueStateThrottled hue.light(i),
+      setHueState hue.light(i),
         alert: "lselect"
       , next
     , (err, res) ->
@@ -67,7 +66,7 @@ hue.once 'ready', ->
 
   colorloop_all = (enable=true) ->
     async.mapSeries [1..process.env.HUE_LIGHTS], (i, next) ->
-      setHueStateThrottled hue.light(i),
+      setHueState hue.light(i),
         effect: if enable then "colorloop" else "none"
       , next
     , (err, res) ->
@@ -87,8 +86,10 @@ hue.once 'ready', ->
       when 'stop'
         colorloop_all false
 
+timerIds = {}
 setHueState = (light, state, callback) ->
-  logger.info "lights[#{light.number}].setState #{JSON.stringify state}"
-  light.setState state, callback
-
-setHueStateThrottled = _.debounce setHueState, 300, trailing: true
+  clearTimeout timerIds[light.number]
+  timerIds[light.number] = setTimeout ->
+    logger.info "lights[#{light.number}].setState #{JSON.stringify state}"
+    light.setState state, callback
+  , 100
