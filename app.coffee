@@ -1,5 +1,3 @@
-process.env.HUE_LIGHTS ||= 3
-
 path = require 'path'
 
 async = require 'async'
@@ -18,6 +16,11 @@ hue.loadConfigFile "#{process.env.HOME}/.hue-korg.json", (err) ->
 
 hue.once 'ready', ->
   logger.info 'hue ready'
+
+  lightCount = 3
+  hue.lights (err, lights) ->
+    return logger.error err if err
+    lightCount = Object.keys(lights).length
 
   controller.on 'slider', (data) ->
     setHueState hue.light(data.name),
@@ -56,7 +59,7 @@ hue.once 'ready', ->
   ## どのボタンを押してもlselect/colorloop停止
   lselect_timer_id = null
   lselect_all = ->
-    async.mapSeries [1..process.env.HUE_LIGHTS], (i, next) ->
+    async.mapSeries [1..lightCount], (i, next) ->
       setHueState hue.light(i),
         alert: "lselect"
       , next
@@ -65,7 +68,7 @@ hue.once 'ready', ->
       logger.info JSON.stringify res
 
   colorloop_all = (enable=true) ->
-    async.mapSeries [1..process.env.HUE_LIGHTS], (i, next) ->
+    async.mapSeries [1..lightCount], (i, next) ->
       setHueState hue.light(i),
         effect: if enable then "colorloop" else "none"
       , next
