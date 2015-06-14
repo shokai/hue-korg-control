@@ -18,8 +18,8 @@
     "coffee-script": "^1.9.0",
     "debug": "^2.1.1",
     "eventemitter2": "^0.4.14",
-    "philips-hue": "^0.1.2",
-    "korg-nano": "git://github.com/shokai/korg-nano#edison"
+    "korg-nano-kontrol": "^0.2.1",
+    "philips-hue": "^0.1.2"
   },
   "devDependencies": {
     "coffeelint": "^1.8.1"
