@@ -3,6 +3,7 @@ Controll [Philips Hue](http://www.meethue.com/) with [Korg nanoKontrol](http://w
 
 - https://github.com/shokai/hue-korg-control
 
+![GIF](http://gyazo.com/0a2e44b980acbc68bfc7d6afec15f289.gif)
 
 ## Mapping
 
