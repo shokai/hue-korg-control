@@ -2,6 +2,7 @@
 
 var path  = require("path");
 var async = require("async");
+var _     = require("lodash");
 
 var debug = require("debug")("hue-korg");
 var Logger = require(path.join(__dirname, "libs/logger"));
@@ -68,6 +69,51 @@ nanoKONTROL.connect()
       case "b":
       case "m":
         setHueState(hue.light(name+1), { alert: "lselect" }); // blink
+        break;
+      }
+    });
+
+    // playボタンでlselect, loopボタンでcolorloop開始
+    // どのボタンを押してもlselect/colorloop停止
+    var lselect_timer_id = null;
+    function lselect_all(){
+      async.mapSeries(_.range(1, lightCount+1), (i, next) => {
+        setHueState(hue.light(i), {
+          alert: "lselect"
+        }, next);
+      }, (err, res) => {
+        if(err) return logger.error(JSON.stringify(err));
+        logger.info(JSON.stringify(res));
+      });
+    }
+
+    function colorloop_all(enable = true){
+      async.mapSeries(_.range(1, lightCount+1), (i, next) => {
+        setHueState(hue.light(i), {
+          effect: enable ? "colorloop" : "none"
+        }, next);
+      }, (err, res) => {
+        if(err) return logger.error(JSON.stringify(err));
+        logger.info(JSON.stringify(res));
+      });
+    }
+
+    korg.on("button:*", function(value){
+      var name = this.event.match(/button:(.+)/)[1];
+      debug(`button:${name} => ${value}`);
+      if(value !== true) return;
+      clearInterval(lselect_timer_id);
+      switch(name){
+      case "play":
+        lselect_all();
+        lselect_timer_id = setInterval(lselect_all, 15000);
+        break;
+      case "loop":
+      case "cycle":
+        colorloop_all(true);
+        break;
+      case "stop":
+        colorloop_all(false);
         break;
       }
     });
