@@ -6,7 +6,7 @@
   "scripts": {
     "test": "eslint *.es6 libs/*.es6",
     "watch": "esw --ext .es6 --watch",
-    "start": "babel app.es6"
+    "start": "babel-node app.es6"
   },
   "author": "Sho Hashimoto <hashimoto@shokai.org>",
   "license": "MIT",
