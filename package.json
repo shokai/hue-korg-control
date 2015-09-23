@@ -1,6 +1,6 @@
 {
   "name": "hue-korg-controll",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "contorll Philips Hue with KORG nanoKontrol",
   "main": "app.es6",
   "scripts": {
