@@ -1,22 +1,21 @@
 "use strict";
 
-var path  = require("path");
-var async = require("async");
-var _     = require("lodash");
+import async from "async";
+import _ from "lodash";
 
-var debug = require("debug")("hue-korg");
-var Logger = require(path.join(__dirname, "libs/logger"));
-var logger = new Logger(debug);
+const debug = require("debug")("hue-korg");
+import Logger from "./libs/logger";
+const logger = new Logger(debug);
 
-var nanoKONTROL = require("korg-nano-kontrol");
-var Hue = require("philips-hue");
-var hue = new Hue();
+import * as nanoKONTROL from "korg-nano-kontrol";
+import Hue from "philips-hue";
+const hue = new Hue();
 
 nanoKONTROL.connect()
 .then(korg => {
   logger.info(`connected "${korg.name}"`);
 
-  hue.loadConfigFile(`${process.env.HOME}/.hue-korg.json`, err => {
+  hue.loadConfigFile(`${process.env.HOME}/.hue-korg.json`, (err) => {
     if(err) return console.error(err);
     hue.emit("ready");
   });

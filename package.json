@@ -5,7 +5,7 @@
   "main": "app.es6",
   "scripts": {
     "test": "eslint *.es6 libs/*.es6",
-    "watch": "esw --ext .es6 --watch",
+    "watch": "chokidar *.es6 \"libs/*.es6\" -c \"npm run test\"",
     "start": "babel-node app.es6"
   },
   "author": "Sho Hashimoto <hashimoto@shokai.org>",
@@ -16,7 +16,8 @@
   ],
   "dependencies": {
     "async": "^1.5.2",
-    "babel": "^5.8.23",
+    "babel-cli": "^6.4.5",
+    "babel-preset-es2015": "^6.3.13",
     "debug": "^2.2.0",
     "eventemitter2": "^0.4.14",
     "korg-nano-kontrol": "^0.2.7",
@@ -24,9 +25,9 @@
     "philips-hue": "^0.1.2"
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.3",
-    "eslint": "^1.5.0",
-    "eslint-watch": "^2.1.1"
+    "babel-eslint": "^4.1.6",
+    "chokidar-cli": "^1.2.0",
+    "eslint": "^1.10.3"
   },
   "repository": {
     "type": "git",
