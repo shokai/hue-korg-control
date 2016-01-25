@@ -7,7 +7,7 @@ const debug = require("debug")("hue-korg");
 import Logger from "./libs/logger";
 const logger = new Logger(debug);
 
-import * as nanoKONTROL from "korg-nano-kontrol";
+import nanoKONTROL from "korg-nano-kontrol";
 import Hue from "philips-hue";
 const hue = new Hue();
 
