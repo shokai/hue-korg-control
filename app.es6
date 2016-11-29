@@ -15,19 +15,20 @@ nanoKONTROL.connect()
 .then(korg => {
   logger.info(`connected "${korg.name}"`);
 
-  hue.loadConfigFile(`${process.env.HOME}/.hue-korg.json`, (err) => {
-    if(err) return console.error(err);
-    hue.emit("ready");
-  });
+  hue.login(`${process.env.HOME}/.hue-korg.json`)
+    .then(() => {
+      console.log('load config done!!!!')
+      hue.emit("ready");
+    }).catch((err) => logger.error(err.stack || err));
 
   hue.once("ready", function(){
     logger.info("hue ready");
 
     var lightCount = 3;
-    hue.lights((err, lights) => {
-      if(err) return logger.error(err);
-      lightCount = Object.keys(lights).length;
-    });
+    hue.getLights()
+      .then((lights) => {
+        lightCount = Object.keys(lights).length;
+      }).catch((err) => logger.error(err.stack || err));
 
     korg.on("slider:*", function(value){
       var name = this.event.split(/:/)[1] - 0;
